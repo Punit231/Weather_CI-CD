@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 import requests
+from datetime import datetime
 import os
 
 app = Flask(__name__)
@@ -21,6 +22,10 @@ def index():
                 "temperature": data["main"]["temp"],
                 "description": data["weather"][0]["description"].title(),
                 "icon": data["weather"][0]["icon"],
+		"humidity": data["main"]["humidity"],
+                "wind": data["wind"]["speed"],
+                "sunrise": datetime.fromtimestamp(data["sys"]["sunrise"]).strftime('%I:%M %p'),
+                "sunset": datetime.fromtimestamp(data["sys"]["sunset"]).strftime('%I:%M %p'),
             }
         else:
             weather["error"] = "City not found"

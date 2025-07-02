@@ -1,56 +1,61 @@
-<!doctype html>
-<html>
-  <head>
-    <title>Weather Checker</title>
-    <style>
-	body { 
-	font-family: sans-serif;
-  	background: #f4f4f4;
-  	display: flex;
-  	justify-content: center;
-  	align-items: center;
-  	height: 100vh; 
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather App</title>
 
-input, button { 
-	padding: 8px; font-size: 16px; 
-}
+  <!-- Tailwind CDN + Font -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-300 min-h-screen dark:from-gray-800 dark:via-gray-900 dark:to-black transition duration-500">
 
-.container {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  text-align: center;
-}
-    </style>
-  </head>
-  <body>
-    <div class="container">
-    <h1>🌤️ Simple Weather App</h1>
-    <form method="POST">
-      <input type="text" name="city" placeholder="Enter City Name" required />
-      <button type="submit">Check Weather</button>
+  <div class="container mx-auto p-6">
+    <h1 class="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white transition">🌦️ Weather App</h1>
+
+    <form method="POST" class="max-w-xl mx-auto mb-6 flex gap-3">
+      <input type="text" name="city" placeholder="Enter City Name" required
+        class="w-full p-3 rounded-xl shadow border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white transition" />
+      <button type="submit"
+        class="px-5 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition font-semibold shadow">
+        Get Weather
+      </button>
     </form>
 
-    {% if weather.city %}
-      <h2>{{ weather.city }}</h2>
-      <p>{{ weather.temperature }}°C | {{ weather.description }}</p>
-      <img src="https://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/{{ weather.icon }}.png">
-    {% elif weather.error %}
-      <p style="color: red;">{{ weather.error }}</p>
+    {% if weather %}
+      {% if weather.error %}
+        <div class="text-red-500 text-center font-medium">{{ weather.error }}</div>
+      {% else %}
+        <div class="bg-white dark:bg-gray-800 text-center rounded-2xl p-6 shadow-xl max-w-xl mx-auto animate-fade-in">
+          <h2 class="text-2xl font-semibold text-gray-800 dark:text-white">{{ weather.city }}</h2>
+          <img class="mx-auto my-4" src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="Weather icon" />
+          <p class="text-xl font-medium text-gray-700 dark:text-gray-300">{{ weather.description }}</p>
+          <h3 class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">{{ weather.temperature }}°C</h3>
+
+          <div class="grid grid-cols-2 gap-4 mt-6 text-left text-sm text-gray-600 dark:text-gray-300">
+            <p>💧 <strong>Humidity:</strong> {{ weather.humidity }}%</p>
+            <p>🌬️ <strong>Wind:</strong> {{ weather.wind }} m/s</p>
+            <p>🌅 <strong>Sunrise:</strong> {{ weather.sunrise }}</p>
+            <p>🌇 <strong>Sunset:</strong> {{ weather.sunset }}</p>
+          </div>
+        </div>
+      {% endif %}
     {% endif %}
-    </div>
-    <script>
+  </div>
+
+  <script>
 	let alertShow = false;
 	setInterval(() => {
   	document.title =
-  	alertShow ? "Weather"
-        	  : "CI/CD Pipeline";
+  	alertShow ? "Weather App"
+            	  : "CI/CD Pipeline";
   
-	alertShow = !alertShow;
+  	alertShow = !alertShow;
 	}, 500);
-    </script>
-  </body>
+  </script>
+</body>
 </html>
-
